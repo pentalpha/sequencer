@@ -4,16 +4,12 @@
 using namespace std;
 
 int main(int argc, char **argv){
-	StringPair a("abc", "bcd");
-	StringPair b("bcd", "abc");
+	StringPair a("abcde", "defgh");
+	StringPair b("defgh", "abcde");
 
-	if(a != b){
-		cout << "A and B are unequal\n";
-	}
+	CompareResult res1(2, false), res2(2, true);
+	cout << mergePair(a, res1) << "\n" << mergePair(b, res2) << "\n";
 
-	if(a == b){
-		cout << "A and B are equal\n";
-	}
 
 	return 0;
 }

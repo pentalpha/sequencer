@@ -36,5 +36,21 @@ struct StringPair{
 		bool initial;
 	};
 
+string mergePair(StringPair a, CompareResult comp){
+	string result;
+	string cuttedY;
+	if(comp.initial){
+		cuttedY = a.y.substr(0, a.y.size() - comp.module);
+		result = cuttedY;
+		result.append(a.x);
+	}else{
+		cuttedY =  a.y.substr(comp.module,  a.y.size() - comp.module);
+		result = a.x;
+		result.append(cuttedY);
+	}
+
+	return result;
+}
+
 
 #endif
