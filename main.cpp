@@ -14,6 +14,7 @@
 using namespace std;
 
 int main(int argc, char **argv){
+
 	/*StringPair a("abcde", "defgh");
 	StringPair b("defgh", "abcde");
 
@@ -39,9 +40,15 @@ int main(int argc, char **argv){
 	StringPair** matrix;
 
 	while(nSegments > 1){
+
+		#ifdef _OPENMP
+		(void) omp_set_dynamic(FALSE);
+		(void) omp_set_num_threads(nSegments);
+		#endif
+
 		matrix = new StringPair*[nSegments];
 
-		#pragma omp parallel num_threads(nSegments)
+		#pragma omp parallel
 		{
 			#pragma omp parallel for
 			for(int length = 0; length < nSegments; length++){
@@ -83,7 +90,6 @@ int main(int argc, char **argv){
 				newSegments[i] = segments[i];
 			}
 		}
-		
 		newSegments[yMax] = bestMerge.result.result;
 
 		for(int i = yMax+1; i < xMax; i++){
