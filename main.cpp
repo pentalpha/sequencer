@@ -40,7 +40,7 @@ int main(int argc, char **argv){
 		for(int i = 1; i < nSegments; i++){
 			for(int j = 0; j < i; j++){
 				matrix[i][j] = StringPair(segments[i],segments[j]);
-				//matrix[i][j].calcResult();
+				matrix[i][j].calcResult();
 				if(matrix[i][j].result.module > 0){
 					cout << "Merging -" << segments[i] << "- with -" << segments[j] << "- results in ->\n" << matrix[i][j].result.result <<"\n";
 				}

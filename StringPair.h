@@ -1,6 +1,7 @@
 #ifndef _STRING_PAIR_
 #define _STRING_PAIR_
 #include <string>
+#include "CompareResultCalculator.h"
 
 using namespace std;
 
@@ -41,7 +42,7 @@ public:
 
 	void calcResult(){
 			if(!compared){
-					//result = calcularCompareResult(StringPair(this->x, this->y));
+					result = calcularCompareResult(StringPair(this->x, this->y));
 					compared = true;
 			}
 	}
