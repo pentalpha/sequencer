@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
+#include <cstdio>
 #include "StringPair.h"
-#include "CompareResultCalculator.h"
 
 using namespace std;
 
@@ -15,13 +15,18 @@ int main(int argc, char **argv){
 	//TO TO: entrada de dados. Entrada provisoria:
 	int oldNSegments;
 	int nSegments = 4;
-	string segments[nSegments] = {"abc", "cde", "efg", "ghij"}, oldSegments*;
+	string* segments = new string[nSegments];
+	segments[0] = "abc";
+	segments[1] = "cde";
+	segments[2] = "efg";
+	segments[3] = "ghij";
+	string* oldSegments;
 
 	//matriz com cada um dos segmentos comparado com os outros
 	//a matriz não possui os elementos que estão na diagonal
 	//nem os elementos acima da diagonal
 	//(por motivos de economia de memoria)
-	StringPair** oldMatrix = null;
+	StringPair** oldMatrix = NULL;
 	StringPair** matrix;
 
 	while(nSegments > 1){
@@ -55,13 +60,13 @@ int main(int argc, char **argv){
 		//yMax sempre vem antes de xMax, a matriz garante isso!
 		StringPair bestMerge = matrix[xMax][yMax];
 		cout << "--------------------\nThe best merge in the iteration is:\n ";
-		cout << "Merging -" << segments[xMax] << "- with -" << segments[yMax] << "- results in ->\n" << bestMerge.result <<"\n";
+		cout << "Merging -" << segments[xMax] << "- with -" << segments[yMax] << "- results in ->\n" << bestMerge.result.result << "\n";
 
-		String* newSegments = new newSegments[nSegments-1];
+		string* newSegments = new string[nSegments-1];
 		for(int i = 0; i < yMax; i++){
 			newSegments[i] = segments[i];
 		}
-		newSegments[yMax] = bestMerge.result;
+		newSegments[yMax] = bestMerge.result.result;
 
 		for(int i = yMax+1; i < xMax; i++){
 			newSegments[i] = segments[i];
@@ -70,7 +75,7 @@ int main(int argc, char **argv){
 			newSegments[i-1] = segments[i];
 		}
 
-		StringPair* oldSegments = segments;
+		oldSegments = segments;
 		segments = newSegments;
 
 		oldNSegments = nSegments;
