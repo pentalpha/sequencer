@@ -33,7 +33,7 @@ struct StringPair{
 			initial = i;
 		}
 		int module;
-		bool initial;
+		bool initial; // true: no início da primeira ; false: no final da primeira
 	};
 
 string mergePair(StringPair a, CompareResult comp){

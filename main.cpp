@@ -1,5 +1,5 @@
 #include <iostream>
-#include "StringPair.h"
+#include "CompareResultCalculator.h"
 
 using namespace std;
 
