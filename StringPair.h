@@ -42,7 +42,7 @@ public:
 	}
 
 	string mergePair(StringPair a, int module, bool initial){
-		cout << module << " " << initial << "\n";
+		// // cout << module << " " << initial << "\n";
 
 		string result;
 		string cuttedY;
@@ -70,13 +70,13 @@ public:
 		for(int i = 0; i < t.size(); i++){
 			busca = t.substr(t.size()-1-i);
 
-			cout << "T Compara " << busca << " com " << s.substr(0,i+1) << " ";
+			// cout << "T Compara " << busca << " com " << s.substr(0,i+1) << " ";
 
 			if(s.substr(0,i+1) == busca){
 				length = busca.size();
-				cout << "length++";
+				// cout << "length++";
 			}
-			cout << "\n";
+			// cout << "\n";
 		}
 		return length;
 	}
@@ -88,13 +88,13 @@ public:
 		for(int i = 0; i < s.size(); i++){
 			busca = s.substr(s.size()-1-i);
 
-			cout << "F Compara " << busca << " com " << t.substr(0,i+1) << " ";
+			// cout << "F Compara " << busca << " com " << t.substr(0,i+1) << " ";
 
 			if(t.substr(0,i+1) == busca){
-				cout << "length++";
+				// cout << "length++";
 				length = busca.size();
 			}
-			cout << "\n";
+			// cout << "\n";
 		}
 
 		return length;

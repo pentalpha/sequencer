@@ -1,2 +1,5 @@
-all:
-	g++ main.cpp -o main
+no-parallel:
+	g++ main.cpp -o main-normal
+
+parallel:
+	g++ main.cpp -o main-parallel -fopenmp
