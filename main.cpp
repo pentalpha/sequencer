@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "StringPair.h"
+#include "CompareResultCalculator.h"
 
 using namespace std;
 
