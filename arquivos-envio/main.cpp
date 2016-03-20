@@ -182,6 +182,8 @@ int main(int argc, char **argv){
 	//cout << "\n----------------- Resultado: --------------------\n";
 	//cout << segments[0].size() << " caracteres\n";
 	cout << segments[0] << "\n";
-	
+
+
+
 	return 0;
 }
