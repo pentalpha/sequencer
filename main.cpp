@@ -69,19 +69,23 @@ int main(int argc, char **argv){
 	}
 	tempBuckets.clear();
 
-
-	for(int actualBucket = 0; actualBucket < nBuckets; actualBucket++){
+	#pragma omp parallel
+	{
+		#pragma omp for
+		for(int actualBucket = 0; actualBucket < nBuckets; actualBucket++){
 		// cout << "Bucket " << actualBucket <<":\n";
 		// cout << "the bucket " << actualBucket << " have " << nSegmentsInBucket[actualBucket] << "." << endl;
-		processBucket(buckets[actualBucket], nSegmentsInBucket[actualBucket], false);
+			processBucket(buckets[actualBucket], nSegmentsInBucket[actualBucket], false);
 		//nSegmentsInBucket[actualBucket] = nSegments;
 		// cout << "Final processing of the bucket[outside]\n";
 		//for (int i = 0; i < nSegmentsInBucket[actualBucket]; i++){
 			// cout << "segments[" << i << "] = \"" << buckets[actualBucket][i] << "\"\n";
 		//}
 		// cout << "the bucket " << actualBucket << " now have " << nSegmentsInBucket[actualBucket] << "." << endl;
+		}
+		
 	}
-
+	
 	int segmentsLeft = 0;
 	for(int i = 0; i < nBuckets; i++){
 		segmentsLeft += nSegmentsInBucket[i];
@@ -213,27 +217,21 @@ void processBucket(string* &segments, int &nSegments, bool forceMerge){
 		if(bestMerge.result.haveResult()){
 			string* newSegments = new string[nSegments-1];
 			oldPositions = new int[nSegments-1];
-
-			#pragma omp parallel
-			{
-				#pragma omp for
-				for(int i = 0; i < yMax; i++){
-					newSegments[i] = segments[i];
-				}
+		
+			for(int i = 0; i < yMax; i++){
+				newSegments[i] = segments[i];
 			}
+			
 
 			newSegments[yMax] = bestMerge.result.result;
 
 			mergeIndex = yMax;
 			erasedIndex  = xMax;
 
-			#pragma omp parallel
-			{
-				#pragma omp for
-				for(int i = yMax+1; i < xMax; i++){
-					newSegments[i] = segments[i];
-				}
+			for(int i = yMax+1; i < xMax; i++){
+				newSegments[i] = segments[i];
 			}
+			
 
 			for(int i = xMax+1; i < nSegments; i++){
 				newSegments[i-1] = segments[i];
@@ -267,8 +265,8 @@ void processBucket(string* &segments, int &nSegments, bool forceMerge){
 		iteration++;
 	}
 	// cout << "Final processing of the bucket[inside]\n";
-	for (int i = 0; i < nSegments; i++){
+	//for (int i = 0; i < nSegments; i++){
 		// cout << "segments[" << i << "] = \"" << segments[i] << "\"\n";
-	}
+	//}
 
 }
