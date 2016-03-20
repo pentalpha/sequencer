@@ -34,16 +34,10 @@ void copyStringVector(string* v1, string* v2, int size){
 }
 
 int main(int argc, char **argv){
-	/*StringPair a("abcde", "defgh");
-	StringPair b("defgh", "abcde");
-
-	CompareResult res1(2, false), res2(2, true);
-	cout << mergePair(a, res1) << "\n" << mergePair(b, res2) << "\n";*/
-
-	//TO TO: entrada de dados. Entrada provisoria:
+	
 	int oldNSegments;
 	int nSegments = 0;
-	int allocateSegments = 50;
+	int allocateSegments = 2;
 	int mergeIndex = -1;
 	int erasedIndex = -1;
 	int* oldPositions = NULL;
@@ -51,7 +45,7 @@ int main(int argc, char **argv){
 	string line;
 	while(getline(cin, line)){
 		if(nSegments >= allocateSegments){
-			cout << "alocando mais memoria para o vetor de entrada\n";
+			//cout << "alocando mais memoria para o vetor de entrada\n";
 			string* auxVector = new string[allocateSegments];
 			copyStringVector(segments, auxVector, nSegments);
 			int newAllocatorSize = allocateSegments + allocateSegments;
@@ -75,16 +69,12 @@ int main(int argc, char **argv){
 		segments = new string[nSegments];
 		copyStringVector(auxVector, segments, nSegments);
 	}
-	for(int i = 0; i < nSegments; i++){
-		//cout << "----------------------------\nSegmento "<< i << ":\n" << segments[i] << "\n";
+	/*for(int i = 0; i < nSegments; i++){
+		cout << "----------------------------\nSegmento "<< i << ":\n" << segments[i] << "\n";
 	}
 	if(segments[0][segments[0].size()-1] != '.'){
-		//cout << "the last character in <full genome sequencing.> is not a point\n";
-	}
-	//segments[0] = "abc";
-	//segments[1] = "cde";
-	//segments[2] = "efg";
-	//segments[3] = "ghij";
+		cout << "the last character in <full genome sequencing.> is not a point\n";
+	}*/
 	string* oldSegments;
 	int iteration = 1;
 	//matriz com cada um dos segmentos comparado com os outros
@@ -119,13 +109,14 @@ int main(int argc, char **argv){
 
 		//inicialização de cada comparação
 		//ATENÇÃO: A iteração sobre a matriz deve obedecer este formato abaixo
-		//	 			 ou vão ocorrer falhas de segmentação
+		//	 		ou vão ocorrer falhas de segmentação
 		int n = 0;
 		int xMax = 1, yMax = 0;
 		for(int i = 1; i < nSegments; i++){
 			for(int j = 0; j < i; j++){
 				//utilizar dados da matriz antiga
 				bool reciclado = false;
+
 				if((iteration > 1) 
 					&& (mergeIndex != -1 && erasedIndex != -1) 
 					&& (oldPositions != NULL)
@@ -157,51 +148,50 @@ int main(int argc, char **argv){
 		}
 
 		//yMax sempre vem antes de xMax, a matriz garante isso!
-
 		StringPair bestMerge = matrix[xMax][yMax];
-		//cout << "segments " << yMax << " with " << xMax << ":\n";
-		//cout << "--------------------\nThe best merge in the iteration is:\n ";
-		//cout << "x = \"" << first20char(bestMerge.x) << " -> " << last20char(bestMerge.x) << "\"\n";
-		//cout << "+\n";
-		//cout << "y = \"" << first20char(bestMerge.y) << " -> " << last20char(bestMerge.y) << "\"\n";
-		//cout << "(initial = " << bestMerge.result.initial << ")\n";
-		//cout << "=\n";
-		//cout << "(" << bestMerge.result.module << " em comum)\n";
-		//cout << bestMerge.result.result << "\n";
+		/*cout << "segments " << yMax << " with " << xMax << ":\n";
+		cout << "--------------------\nThe best merge in the iteration is:\n ";
+		cout << "x = \"" << first20char(bestMerge.x) << " -> " << last20char(bestMerge.x) << "\"\n";
+		cout << "+\n";
+		cout << "y = \"" << first20char(bestMerge.y) << " -> " << last20char(bestMerge.y) << "\"\n";
+		cout << "(initial = " << bestMerge.result.initial << ")\n";
+		cout << "=\n";
+		cout << "(" << bestMerge.result.module << " em comum)\n";
+		cout << bestMerge.result.result << "\n";*/
 
 		string* newSegments = new string[nSegments-1];
 		oldPositions = new int[nSegments-1];
+		
 		#pragma omp parallel
 		{
 			#pragma omp for
 			for(int i = 0; i < yMax; i++){
 				newSegments[i] = segments[i];
-				//oldPositions[i] = i;
 			}
 		}
+
 		newSegments[yMax] = bestMerge.result.result;
-		//oldPositions[yMax] = yMax;
+
 		mergeIndex = yMax;
 		erasedIndex  = xMax;
+
 		#pragma omp parallel
 		{
 			#pragma omp for
 			for(int i = yMax+1; i < xMax; i++){
 				newSegments[i] = segments[i];
-				//oldPositions[i] = i;
 			}
 		}
 
 		for(int i = xMax+1; i < nSegments; i++){
 			newSegments[i-1] = segments[i];
-			//oldPositions[i] = i+1;
 		}
 
-		for(int i = 0; i < xMax; i++){
+		for(int i = 0; i < nSegments-1; i++){
 			oldPositions[i] = i;
-		}
-		for(int i = xMax; i < nSegments-1; i++){
-			oldPositions[i] = i+1;
+			if(i >= xMax){
+				oldPositions[i]++;
+			}
 		}
 
 		oldSegments = segments;
@@ -211,13 +201,10 @@ int main(int argc, char **argv){
 		nSegments -= 1;
 
 		oldMatrix = matrix;
-
-		//cout << n << " different pairs on the matrix\n";
 		//std::cout << "===============Iteration " << iteration << "=================\n\n";
 		iteration++;
 	}
 	//cout << "\n----------------- Resultado: --------------------\n";
-	//cout << segments[0].size() << " caracteres\n";
 	cout << segments[0];
 	
 	return 0;
