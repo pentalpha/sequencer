@@ -34,7 +34,7 @@ void copyStringVector(string* v1, string* v2, int size){
 }
 
 int main(int argc, char **argv){
-	
+
 	int oldNSegments;
 	int nSegments = 0;
 	int allocateSegments = 2;
@@ -112,6 +112,7 @@ int main(int argc, char **argv){
 		//	 		ou vão ocorrer falhas de segmentação
 		int n = 0;
 		int xMax = 1, yMax = 0;
+		#pragma omp parallel for
 		for(int i = 1; i < nSegments; i++){
 			for(int j = 0; j < i; j++){
 				//utilizar dados da matriz antiga
