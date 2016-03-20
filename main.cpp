@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <cstdio>
 #include "StringPair.h"
@@ -210,7 +211,18 @@ int main(int argc, char **argv){
 		iteration++;
 	}
 	//cout << "\n----------------- Resultado: --------------------\n";
-	cout << segments[0];
+	string textoSaida = segments[0];
+	
+	//replace(textoSaida.begin(),textoSaida.end(),"%%","\n");
+
+	for(int i = 0; i < textoSaida.size()-1; i++){	
+		if((textoSaida[i] == '%') && (textoSaida[i+1] == '%')){
+			textoSaida.replace(i,2,"\n");
+		}
+	}
+
+
+	cout << textoSaida;
 	
 	return 0;
 }
