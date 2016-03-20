@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <iostream>
 #include <cstdio>
+#include <vector>
 #include "StringPair.h"
 
 using namespace std;
@@ -25,51 +26,104 @@ void copyStringVector(string* v1, string* v2, int size){
 		#pragma omp for
 		for(int i = 0; i < size; i++){
 			v2[i] = v1[i];
-		}	
-	}	
+		}
+	}
 }
+
+void processBucket(string* &segments, int &nSegments, bool forceMerge);
 
 int main(int argc, char **argv){
 
-	int oldNSegments;
-	int nSegments = 0;
-	int allocateSegments = 2;
-	int mergeIndex = -1;
-	int erasedIndex = -1;
-	int* oldPositions = NULL;
-	string* segments = new string[allocateSegments];
+	int segmentsPerBucket = 2;
+	int totalSegments = 0;
 	string line;
+	vector<string> tempSegments;
+	vector<vector<string> > tempBuckets;
 	while(getline(cin, line)){
-		if(nSegments >= allocateSegments){
-			//cout << "alocando mais memoria para o vetor de entrada\n";
-			string* auxVector = new string[allocateSegments];
-			copyStringVector(segments, auxVector, nSegments);
-			int newAllocatorSize = allocateSegments + allocateSegments;
-			segments = new string[newAllocatorSize];
-			copyStringVector(auxVector, segments, nSegments);
-			allocateSegments = newAllocatorSize;
-		}
-		nSegments++;
 		if(line[line.size()-1] == '\r'){
 
 			line = line.substr(0, line.size()-1);
-			//cout << "quebra de linha barra r retirada  \n";
+			//// cout << "quebra de linha barra r retirada  \n";
 		}
-		segments[nSegments-1] = line;
+		tempSegments.push_back(line);
+		totalSegments++;
+		if(tempSegments.size() == segmentsPerBucket){
+			tempBuckets.push_back(tempSegments);
+			tempSegments.clear();
+		}
+	}
+	if(!tempSegments.empty()){
+		tempBuckets.push_back(tempSegments);
+		tempSegments.clear();
+	}
+	int nBuckets = tempBuckets.size();
+	int nSegmentsInBucket[nBuckets];
+	string** buckets = new string*[nBuckets];
+	for(int i = 0; i < nBuckets; i++){
+		nSegmentsInBucket[i] = tempBuckets[i].size();
+		buckets[i] = new string[nSegmentsInBucket[i]];
+		for(int j = 0; j < nSegmentsInBucket[i]; j++){
+			buckets[i][j] = tempBuckets[i][j];
+		}
+		tempBuckets[i].clear();
+	}
+	tempBuckets.clear();
+
+
+	for(int actualBucket = 0; actualBucket < nBuckets; actualBucket++){
+		// cout << "Bucket " << actualBucket <<":\n";
+		// cout << "the bucket " << actualBucket << " have " << nSegmentsInBucket[actualBucket] << "." << endl;
+		processBucket(buckets[actualBucket], nSegmentsInBucket[actualBucket], false);
+		//nSegmentsInBucket[actualBucket] = nSegments;
+		// cout << "Final processing of the bucket[outside]\n";
+		//for (int i = 0; i < nSegmentsInBucket[actualBucket]; i++){
+			// cout << "segments[" << i << "] = \"" << buckets[actualBucket][i] << "\"\n";
+		//}
+		// cout << "the bucket " << actualBucket << " now have " << nSegmentsInBucket[actualBucket] << "." << endl;
 	}
 
-	if(nSegments < allocateSegments){
-		//cout << "desalocando memoria desnecessaria no vetor de entrada\n";
-		string* auxVector = new string[nSegments];
-		copyStringVector(segments, auxVector, nSegments);
-		segments = new string[nSegments];
-		copyStringVector(auxVector, segments, nSegments);
+	int segmentsLeft = 0;
+	for(int i = 0; i < nBuckets; i++){
+		segmentsLeft += nSegmentsInBucket[i];
 	}
+	// cout << segmentsLeft << " segments left in total." << endl;
+	string* finalBucket = new string[segmentsLeft];
+	int index = 0;
+	for(int i = 0; i < nBuckets; i++){
+		for(int j = 0; j < nSegmentsInBucket[i]; j++){
+			finalBucket[index] = buckets[i][j];
+			index++;
+		}
+	}
+	// cout << "Bucket final:\n";
+	processBucket(finalBucket, segmentsLeft, true);
+	string textoSaida = finalBucket[0];
+	//replace(textoSaida.begin(),textoSaida.end(),"%%","\n");
+
+	for(int i = 0; i < textoSaida.size()-1; i++){
+		if((textoSaida[i] == '%') && (textoSaida[i+1] == '%')){
+			textoSaida.replace(i,2,"\n");
+		}
+	}
+
+
+	cout << textoSaida;
+
+	return 0;
+}
+
+void processBucket(string* &segments, int &nSegments, bool forceMerge){
+	int oldNSegments;
+
+	int mergeIndex = -1;
+	int erasedIndex = -1;
+	int* oldPositions = NULL;
+
 	/*for(int i = 0; i < nSegments; i++){
-		cout << "----------------------------\nSegmento "<< i << ":\n" << segments[i] << "\n";
+		// cout << "----------------------------\nSegmento "<< i << ":\n" << segments[i] << "\n";
 	}
 	if(segments[0][segments[0].size()-1] != '.'){
-		cout << "the last character in <full genome sequencing.> is not a point\n";
+		// cout << "the last character in <full genome sequencing.> is not a point\n";
 	}*/
 		string* oldSegments;
 		int iteration = 1;
@@ -79,7 +133,7 @@ int main(int argc, char **argv){
 	//(por motivos de economia de memoria)
 		StringPair** oldMatrix = new StringPair*[nSegments];
 		StringPair** matrix    = new StringPair*[nSegments];
-
+		bool mergedSomething = false;
 		while(nSegments > 1){
 
 		#ifdef _OPENMP
@@ -87,10 +141,10 @@ int main(int argc, char **argv){
 			(void) omp_set_num_threads(nSegments);
 		#endif
 
-		//std::cout << "===============Iteration " << iteration << "=================\n";
-			//for (int i = 0; i < nSegments; i++){
-			//cout << "segments[" << i << "] = \"" << first20char(segments[i]) << " -> " << last20char(segments[i]) << "\"\n";
-			//}
+		// cout << "===============Iteration " << iteration << "=================\n";
+		//for (int i = 0; i < nSegments; i++){
+			// cout << "segments[" << i << "] = \"" << first20char(segments[i]) << " -> " << last20char(segments[i]) << "\"\n";
+		//}
 
 		#pragma omp parallel
 			{
@@ -98,7 +152,7 @@ int main(int argc, char **argv){
 				for(int length = 0; length < nSegments; length++){
 					matrix[length]    = new StringPair[length];
 					oldMatrix[length] = new StringPair[length];
-				 //cout << "line " << length << " has " << length << " comparisons\n";
+				 //// cout << "line " << length << " has " << length << " comparisons\n";
 				}
 			}
 
@@ -113,27 +167,27 @@ int main(int argc, char **argv){
 				//utilizar dados da matriz antiga
 					bool reciclado = false;
 
-					if((iteration > 1) 
-						&& (mergeIndex != -1 && erasedIndex != -1) 
+					if((iteration > 1)
+						&& (mergeIndex != -1 && erasedIndex != -1)
 						&& (oldPositions != NULL)
 						&& (j != mergeIndex && i != mergeIndex)){
-					//cout << "tentando reciclar " << i << " e " << j << " Passo 1" << endl;
+							// cout << "tentando reciclar " << i << " e " << j << " Passo 1" << endl;
 						int oldI = oldPositions[i];
-					int oldJ = oldPositions[j];
-					if(j < i){
-							//cout << "tentando reciclar os antigos " << oldI << " e " << oldJ << " Passo 2" << endl;
-						matrix[i][j] = oldMatrix[oldI][oldJ];
-						reciclado = true;
-							//cout << "reciclado" << endl;
+						int oldJ = oldPositions[j];
+						if(j < i){
+							// cout << "tentando reciclar os antigos " << oldI << " e " << oldJ << " Passo 2" << endl;
+							matrix[i][j] = oldMatrix[oldI][oldJ];
+							reciclado = true;
+							// cout << "reciclado" << endl;
 					}
 				}
 				if(!reciclado){
 					matrix[i][j] = StringPair(segments[i],segments[j]);
-					matrix[i][j].calcResult();
+					matrix[i][j].calcResult(forceMerge);
 				}
 
 				//if(matrix[i][j].result.module > 0){
-					//cout << "Merging -" << segments[i] << "- with -" << segments[j] << "- results in ->\n" << matrix[i][j].result.result <<"\n";
+					//// cout << "Merging -" << segments[i] << "- with -" << segments[j] << "- results in ->\n" << matrix[i][j].result.result <<"\n";
 				//}
 				if(matrix[i][j].result.module > matrix[xMax][yMax].result.module){
 					xMax = i;
@@ -142,87 +196,79 @@ int main(int argc, char **argv){
 				n++;
 			}
 		}
-		
-		
+
+
 
 		//yMax sempre vem antes de xMax, a matriz garante isso!
 		StringPair bestMerge = matrix[xMax][yMax];
-		/*cout << "segments " << yMax << " with " << xMax << ":\n";
-		cout << "--------------------\nThe best merge in the iteration is:\n ";
-		cout << "x = \"" << first20char(bestMerge.x) << " -> " << last20char(bestMerge.x) << "\"\n";
-		cout << "+\n";
-		cout << "y = \"" << first20char(bestMerge.y) << " -> " << last20char(bestMerge.y) << "\"\n";
-		cout << "(initial = " << bestMerge.result.initial << ")\n";
-		cout << "=\n";
-		cout << "(" << bestMerge.result.module << " em comum)\n";
-		cout << bestMerge.result.result << "\n";*/
+		// cout << "segments " << yMax << " with " << xMax << ":\n";
+		// cout << "--------------------\nThe best merge in the iteration is:\n ";
+		// cout << "x = \"" << first20char(bestMerge.x) << " -> " << last20char(bestMerge.x) << "\"\n";
+		// cout << "+\n";
+		// cout << "y = \"" << first20char(bestMerge.y) << " -> " << last20char(bestMerge.y) << "\"\n";
+		// cout << "(initial = " << bestMerge.result.initial << ")\n";
+		// cout << "=\n";
+		// cout << "(" << bestMerge.result.module << " em comum)\n";
+		// cout << bestMerge.result.result << "\n";
+		if(bestMerge.result.haveResult()){
+			string* newSegments = new string[nSegments-1];
+			oldPositions = new int[nSegments-1];
 
-		string* newSegments = new string[nSegments-1];
-		oldPositions = new int[nSegments-1];
-		
-		#pragma omp parallel
-		{
-			#pragma omp for
-			for(int i = 0; i < yMax; i++){
-				newSegments[i] = segments[i];
-			}
-		}
-
-		newSegments[yMax] = bestMerge.result.result;
-
-		mergeIndex = yMax;
-		erasedIndex  = xMax;
-
-		#pragma omp parallel
-		{
-			#pragma omp for
-			for(int i = yMax+1; i < xMax; i++){
-				newSegments[i] = segments[i];
-			}
-		}
-
-		for(int i = xMax+1; i < nSegments; i++){
-			newSegments[i-1] = segments[i];
-		}
-
-		for(int i = 0; i < nSegments-1; i++){
-			oldPositions[i] = i;
-			if(i >= xMax){
-				oldPositions[i]++;
-			}
-		}
-
-		oldSegments = segments;
-		segments = newSegments;
-
-		oldNSegments = nSegments;
-		nSegments -= 1;
-
-		#pragma omp parallel
-		{
-			for(int i = 1; i < nSegments; i++){
-				for(int j = 0; j < i; j++){
-					oldMatrix[i][j] = matrix[i][j];		
+			#pragma omp parallel
+			{
+				#pragma omp for
+				for(int i = 0; i < yMax; i++){
+					newSegments[i] = segments[i];
 				}
-			}	
-		}
+			}
 
-		//std::cout << "===============Iteration " << iteration << "=================\n\n";
+			newSegments[yMax] = bestMerge.result.result;
+
+			mergeIndex = yMax;
+			erasedIndex  = xMax;
+
+			#pragma omp parallel
+			{
+				#pragma omp for
+				for(int i = yMax+1; i < xMax; i++){
+					newSegments[i] = segments[i];
+				}
+			}
+
+			for(int i = xMax+1; i < nSegments; i++){
+				newSegments[i-1] = segments[i];
+			}
+
+			for(int i = 0; i < nSegments-1; i++){
+				oldPositions[i] = i;
+				if(i >= xMax){
+					oldPositions[i]++;
+				}
+			}
+
+			oldSegments = segments;
+			segments = newSegments;
+
+			oldNSegments = nSegments;
+			nSegments -= 1;
+
+			#pragma omp parallel
+			{
+				for(int i = 1; i < nSegments; i++){
+					for(int j = 0; j < i; j++){
+						oldMatrix[i][j] = matrix[i][j];
+					}
+				}
+			}
+		}else{
+			break;
+		}
+		// cout << "===============Iteration " << iteration << "=================\n\n";
 		iteration++;
 	}
-	//cout << "\n----------------- Resultado: --------------------\n";
-	string textoSaida = segments[0];
-	
-	//replace(textoSaida.begin(),textoSaida.end(),"%%","\n");
-
-	for(int i = 0; i < textoSaida.size()-1; i++){	
-		if((textoSaida[i] == '%') && (textoSaida[i+1] == '%')){
-			textoSaida.replace(i,2,"\n");
-		}
+	// cout << "Final processing of the bucket[inside]\n";
+	for (int i = 0; i < nSegments; i++){
+		// cout << "segments[" << i << "] = \"" << segments[i] << "\"\n";
 	}
 
-
-	cout << textoSaida;
-	
-	return 0;
 }

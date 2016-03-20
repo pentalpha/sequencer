@@ -23,6 +23,10 @@ struct CompareResult{
 	int module;
 	bool initial;
 	string result;
+
+	bool haveResult(){
+		return (result != "");
+	}
 };
 
 class StringPair{
@@ -101,11 +105,14 @@ public:
 		return length;
 	}
 
-	void calcularCompareResult(){
+	void calcularCompareResult(bool forceMerge = false){
+
 		CompareResult comp(0,false,"");
 
 		string first  = x;
 		string second = y;
+		int minModule = (int)((first.size()+second.size())/2 * 0.05);
+		if(minModule <= 0){ minModule = 1;}
 
 		int initialTrue;
 		int initialFalse;
@@ -129,14 +136,14 @@ public:
 			comp.initial = false;
 		}
 
-		comp.result = mergePair(StringPair(first, second),comp.module,comp.initial);
+		comp.result = (comp.module < minModule && !forceMerge) ? "" : mergePair(StringPair(first, second),comp.module,comp.initial);
 
 		result = comp;
 	}
 
-	void calcResult(){
+	void calcResult(bool force = false){
 			if(!compared){
-					calcularCompareResult();
+					calcularCompareResult(force);
 					compared = true;
 			}
 	}
