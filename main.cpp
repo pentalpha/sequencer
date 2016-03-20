@@ -92,8 +92,12 @@ int main(int argc, char **argv){
 		}
 		newSegments[yMax] = bestMerge.result.result;
 
-		for(int i = yMax+1; i < xMax; i++){
-			newSegments[i] = segments[i];
+		#pragma omp parallel
+		{
+			#pragma omp for
+			for(int i = yMax+1; i < xMax; i++){
+				newSegments[i] = segments[i];
+			}
 		}
 
 		for(int i = xMax+1; i < nSegments; i++){
