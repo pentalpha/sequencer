@@ -1,6 +1,7 @@
 #ifndef _STRING_PAIR_
 #define _STRING_PAIR_
 #include <string>
+#include <omp.h>
 
 #define FIRST 0
 #define LAST  size()-1

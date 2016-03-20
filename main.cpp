@@ -1,15 +1,6 @@
 #include <iostream>
-#include <string>
 #include <cstdio>
 #include "StringPair.h"
-
-#ifdef _OPENMP
-#include <omp.h>
-#define TRUE  1
-#define FALSE 0
-#else
-#define omp_get_thread_num() 0
-#endif
 
 using namespace std;
 
@@ -28,9 +19,13 @@ string last20char(string a){
 }
 
 void copyStringVector(string* v1, string* v2, int size){
-	for(int i = 0; i < size; i++){
-		v2[i] = v1[i];
-	}
+	#pragma omp parallel
+	{
+		#pragma omp for
+		for(int i = 0; i < size; i++){
+			v2[i] = v1[i];
+		}	
+	}	
 }
 
 int main(int argc, char **argv){
@@ -75,71 +70,70 @@ int main(int argc, char **argv){
 	if(segments[0][segments[0].size()-1] != '.'){
 		cout << "the last character in <full genome sequencing.> is not a point\n";
 	}*/
-	string* oldSegments;
-	int iteration = 1;
+		string* oldSegments;
+		int iteration = 1;
 	//matriz com cada um dos segmentos comparado com os outros
 	//a matriz não possui os elementos que estão na diagonal
 	//nem os elementos acima da diagonal
 	//(por motivos de economia de memoria)
-	StringPair** oldMatrix = NULL;
-	StringPair** matrix;
+		StringPair** oldMatrix = new StringPair*[nSegments];
+		StringPair** matrix    = new StringPair*[nSegments];
 
-	while(nSegments > 1){
+		while(nSegments > 1){
 
 		#ifdef _OPENMP
-		(void) omp_set_dynamic(FALSE);
-		(void) omp_set_num_threads(nSegments);
+			(void) omp_set_dynamic(0);
+			(void) omp_set_num_threads(nSegments);
 		#endif
 
 		//std::cout << "===============Iteration " << iteration << "=================\n";
-		for (int i = 0; i < nSegments; i++){
+			//for (int i = 0; i < nSegments; i++){
 			//cout << "segments[" << i << "] = \"" << first20char(segments[i]) << " -> " << last20char(segments[i]) << "\"\n";
-		}
-
-		matrix = new StringPair*[nSegments];
+			//}
 
 		#pragma omp parallel
-		{
+			{
 			#pragma omp parallel for
-			for(int length = 0; length < nSegments; length++){
-				matrix[length] = new StringPair[length];
+				for(int length = 0; length < nSegments; length++){
+					matrix[length]    = new StringPair[length];
+					oldMatrix[length] = new StringPair[length];
 				 //cout << "line " << length << " has " << length << " comparisons\n";
+				}
 			}
-		}
 
 		//inicialização de cada comparação
 		//ATENÇÃO: A iteração sobre a matriz deve obedecer este formato abaixo
 		//	 		ou vão ocorrer falhas de segmentação
-		int n = 0;
-		int xMax = 1, yMax = 0;
-		#pragma omp parallel for
-		for(int i = 1; i < nSegments; i++){
-			for(int j = 0; j < i; j++){
-				//utilizar dados da matriz antiga
-				bool reciclado = false;
+			int n = 0;
+			int xMax = 1, yMax = 0;
 
-				if((iteration > 1) 
-					&& (mergeIndex != -1 && erasedIndex != -1) 
-					&& (oldPositions != NULL)
-					&& (j != mergeIndex && i != mergeIndex)){
+			for(int i = 1; i < nSegments; i++){
+				for(int j = 0; j < i; j++){
+				//utilizar dados da matriz antiga
+					bool reciclado = false;
+
+					if((iteration > 1) 
+						&& (mergeIndex != -1 && erasedIndex != -1) 
+						&& (oldPositions != NULL)
+						&& (j != mergeIndex && i != mergeIndex)){
 					//cout << "tentando reciclar " << i << " e " << j << " Passo 1" << endl;
 						int oldI = oldPositions[i];
-						int oldJ = oldPositions[j];
-						if(j < i){
+					int oldJ = oldPositions[j];
+					if(j < i){
 							//cout << "tentando reciclar os antigos " << oldI << " e " << oldJ << " Passo 2" << endl;
-							matrix[i][j] = oldMatrix[oldI][oldJ];
-							reciclado = true;
+						matrix[i][j] = oldMatrix[oldI][oldJ];
+						reciclado = true;
 							//cout << "reciclado" << endl;
-						}
+					}
 				}
 				if(!reciclado){
 					matrix[i][j] = StringPair(segments[i],segments[j]);
 					matrix[i][j].calcResult();
 				}
-				
-				if(matrix[i][j].result.module > 0){
+
+				//if(matrix[i][j].result.module > 0){
 					//cout << "Merging -" << segments[i] << "- with -" << segments[j] << "- results in ->\n" << matrix[i][j].result.result <<"\n";
-				}
+				//}
 				if(matrix[i][j].result.module > matrix[xMax][yMax].result.module){
 					xMax = i;
 					yMax = j;
@@ -147,6 +141,8 @@ int main(int argc, char **argv){
 				n++;
 			}
 		}
+		
+		
 
 		//yMax sempre vem antes de xMax, a matriz garante isso!
 		StringPair bestMerge = matrix[xMax][yMax];
@@ -201,7 +197,15 @@ int main(int argc, char **argv){
 		oldNSegments = nSegments;
 		nSegments -= 1;
 
-		oldMatrix = matrix;
+		#pragma omp parallel
+		{
+			for(int i = 1; i < nSegments; i++){
+				for(int j = 0; j < i; j++){
+					oldMatrix[i][j] = matrix[i][j];		
+				}
+			}	
+		}
+
 		//std::cout << "===============Iteration " << iteration << "=================\n\n";
 		iteration++;
 	}
