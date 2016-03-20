@@ -106,8 +106,19 @@ public:
 		string first  = x;
 		string second = y;
 
-		int initialTrue = calcularInitialTrue(first,second);
-		int initialFalse = calcularInitialFalse(first,second);
+		int initialTrue;
+		int initialFalse;
+
+		#pragma omp parallel
+		{
+			#pragma omp sections
+			{
+				#pragma omp section
+				{initialTrue = calcularInitialTrue(first,second);}
+				#pragma omp section
+				{initialFalse = calcularInitialFalse(first,second);}
+			}
+		}
 
 		if(initialTrue >= initialFalse){
 			comp.module  = initialTrue;
