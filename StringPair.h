@@ -138,6 +138,7 @@ public:
 
 		comp.result = (comp.module < minModule && !forceMerge) ? "" : mergePair(StringPair(first, second),comp.module,comp.initial);
 
+
 		result = comp;
 	}
 
