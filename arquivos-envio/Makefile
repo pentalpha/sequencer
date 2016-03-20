@@ -1,3 +1,3 @@
 all:
-	icc -O3 -c main.cpp -qopenmp -o main.o
-	icc -O3 main.o -qopenmp -o main
+	icpc -O3 -c main.cpp -qopenmp -o main.o
+	icpc -O3 main.o -qopenmp -o main
