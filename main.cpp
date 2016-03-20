@@ -34,7 +34,7 @@ void processBucket(string* &segments, int &nSegments, bool forceMerge);
 
 int main(int argc, char **argv){
 
-	int segmentsPerBucket = 2;
+	int segmentsPerBucket = 200;
 	int totalSegments = 0;
 	string line;
 	vector<string> tempSegments;
