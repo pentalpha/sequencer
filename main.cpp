@@ -3,6 +3,14 @@
 #include <cstdio>
 #include "StringPair.h"
 
+#ifdef _OPENMP
+#include <omp.h>
+#define TRUE  1
+#define FALSE 0
+#else
+#define omp_get_thread_num() 0
+#endif
+
 using namespace std;
 
 string first20char(string a){
@@ -50,7 +58,7 @@ int main(int argc, char **argv){
 		}
 		nSegments++;
 		if(line[line.size()-1] == '\r'){
-			
+
 			line = line.substr(0, line.size()-1);
 			//cout << "quebra de linha barra r retirada  \n";
 		}
@@ -84,12 +92,22 @@ int main(int argc, char **argv){
 	StringPair** matrix;
 
 	while(nSegments > 1){
-		//std::cout << "===============Iteration " << iteration << "=================\n";		
+
+		#ifdef _OPENMP
+		(void) omp_set_dynamic(FALSE);
+		(void) omp_set_num_threads(nSegments);
+		#endif
+
+		//std::cout << "===============Iteration " << iteration << "=================\n";
 		matrix = new StringPair*[nSegments];
-		for(int i = 0; i < nSegments; i++){
-			int length = i;
-			matrix[i] = new StringPair[length];
-			//cout << "line " << i << " has " << length << " comparisons\n";
+
+		#pragma omp parallel
+		{
+			#pragma omp parallel for
+			for(int length = 0; length < nSegments; length++){
+				matrix[length] = new StringPair[length];
+				// cout << "line " << i << " has " << length << " comparisons\n";
+			}
 		}
 
 		//inicialização de cada comparação
@@ -121,20 +139,30 @@ int main(int argc, char **argv){
 		// << "- with -" << segments[yMax] << "- results in ->\n" << bestMerge.result.result << "\n";
 		//cout << "+\n";
 		//cout << "y = \"" << first20char(bestMerge.y) << " -> " << last20char(bestMerge.y) << "\"\n";
-		//cout << "(initial = " << bestMerge.result.initial << ")\n"; 
+		//cout << "(initial = " << bestMerge.result.initial << ")\n";
 		//cout << "=\n";
 		//cout << "(" << bestMerge.result.module << " em comum)\n";
 		//cout << bestMerge.result.result << "\n";
 
 		string* newSegments = new string[nSegments-1];
-		for(int i = 0; i < yMax; i++){
-			newSegments[i] = segments[i];
+
+		#pragma omp parallel
+		{
+			#pragma omp for
+			for(int i = 0; i < yMax; i++){
+				newSegments[i] = segments[i];
+			}
 		}
 		newSegments[yMax] = bestMerge.result.result;
 
-		for(int i = yMax+1; i < xMax; i++){
-			newSegments[i] = segments[i];
+		#pragma omp parallel
+		{
+			#pragma omp for
+			for(int i = yMax+1; i < xMax; i++){
+				newSegments[i] = segments[i];
+			}
 		}
+
 		for(int i = xMax+1; i < nSegments; i++){
 			newSegments[i-1] = segments[i];
 		}
