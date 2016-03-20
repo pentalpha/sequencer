@@ -23,6 +23,10 @@ struct CompareResult{
 	int module;
 	bool initial;
 	string result;
+
+	bool haveResult(){
+		return (result != "");
+	}
 };
 
 class StringPair{
@@ -129,7 +133,7 @@ public:
 			comp.initial = false;
 		}
 
-		comp.result = mergePair(StringPair(first, second),comp.module,comp.initial);
+		comp.result = (comp.module == 0) ? "" : mergePair(StringPair(first, second),comp.module,comp.initial);
 
 		result = comp;
 	}
