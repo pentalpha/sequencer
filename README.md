@@ -1,4 +1,5 @@
-Algorithm for sequencing segments of text in order to return the full text.
+Highly parallelized algorithm (using OpenMP) for sequencing segments of text in order to return the full text.
+
 Input - lines of text (%% = \n):
 
 "Casa aba %% data
@@ -13,7 +14,7 @@ Output - full text:
 
 data live stream"
 
-Algorithm made for the Bioinformatics Hackathon (http://bioinformatica.imd.ufrn.br/snnb/).
+Algorithm made for the Bioinformatics Hackathon (http://bioinformatica.imd.ufrn.br/snnb/), won first place with a run time of 0.05s.
 
 ----------------------------------------
 
