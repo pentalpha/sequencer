@@ -1,1 +1,1 @@
-time ./main-parallel < problema-hackaton/A.input > outputs/A_parallel.output
+time ./main-parallel < inputs/A.input > outputs/A_parallel.output

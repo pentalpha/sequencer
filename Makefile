@@ -1,5 +1,5 @@
 normal:
-	g++ main.cpp -o main-normal -O3
+	g++ main.cpp ProcessBucket.cpp StringPair.cpp -o main-normal -O3
 
 parallel:
-	g++ main.cpp -o main-parallel -fopenmp -O3
+	g++ main.cpp ProcessBucket.cpp StringPair.cpp -o main-parallel -fopenmp -O3

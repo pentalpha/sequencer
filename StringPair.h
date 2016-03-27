@@ -6,27 +6,18 @@
 #define FIRST 0
 #define LAST  size()-1
 
-//CompareResult calcularCompareResult(StringPair pairOfStrings);
-
 using namespace std;
 
 struct CompareResult{
-	CompareResult(){
-		module = -1;
-		initial = false;
-	}
-	CompareResult(int m, bool i, string a){
-		module = m;
-		initial = i;
-		result = a;
-	}
+	CompareResult();
+
+	CompareResult(int m, bool i, string a);
+
 	int module;
 	bool initial;
 	string result;
 
-	bool haveResult(){
-		return (result != "");
-	}
+	bool haveResult();
 };
 
 class StringPair{
@@ -35,119 +26,22 @@ public:
 	string y;
 	bool compared;
 	CompareResult result;
-	StringPair(){
-		x = "";
-		y = "";
-		compared = false;
-	}
-	StringPair(string a, string b){
-		x = a;
-		y = b;
-		compared = false;
-	}
 
-	string mergePair(StringPair a, int module, bool initial){
-		// cout << module << " " << initial << "\n";
+	StringPair();
 
-		string result;
-		string cuttedY;
-		if(initial){
-			cuttedY = a.y.substr(0, a.y.size() - module);
-			result = cuttedY;
-			result.append(a.x);
-		}else{
-			cuttedY =  a.y.substr(module,  a.y.size() - module);
-			result = a.x;
-			result.append(cuttedY);
-		}
+	StringPair(string a, string b);
 
-		return result;
-	}
+	string mergePair(StringPair a, int module, bool initial);
 
-	string printPair(){
-		return x + ", " + y;
-	}
+	string printPair();
 
-	int calcularInitialTrue(string s, string t){
-		int length = 0;
+	int calcularInitialTrue(string s, string t);
 
-		string busca;
-		for(int i = 0; i < t.size(); i++){
-			busca = t.substr(t.size()-1-i);
+	int calcularInitialFalse(string s, string t);
 
-			// cout << "T Compara " << busca << " com " << s.substr(0,i+1) << " ";
+	void calcularCompareResult(bool forceMerge = false);
 
-			if(s.substr(0,i+1) == busca){
-				length = busca.size();
-				// cout << "length++";
-			}
-			// cout << "\n";
-		}
-		return length;
-	}
-
-	int calcularInitialFalse(string s, string t){
-		int length = 0;
-
-		string busca;
-		for(int i = 0; i < s.size(); i++){
-			busca = s.substr(s.size()-1-i);
-
-			// cout << "F Compara " << busca << " com " << t.substr(0,i+1) << " ";
-
-			if(t.substr(0,i+1) == busca){
-				// cout << "length++";
-				length = busca.size();
-			}
-			// cout << "\n";
-		}
-
-		return length;
-	}
-
-	void calcularCompareResult(bool forceMerge = false){
-
-		CompareResult comp(0,false,"");
-
-		string first  = x;
-		string second = y;
-		int minModule = (int)((first.size()+second.size())/2 * 0.05);
-		if(minModule <= 0){ minModule = 1;}
-
-		int initialTrue;
-		int initialFalse;
-
-		#pragma omp parallel
-		{
-			#pragma omp sections
-			{
-				#pragma omp section
-				{initialTrue = calcularInitialTrue(first,second);}
-				#pragma omp section
-				{initialFalse = calcularInitialFalse(first,second);}
-			}
-		}
-
-		if(initialTrue >= initialFalse){
-			comp.module  = initialTrue;
-			comp.initial = true;
-		} else {
-			comp.module  = initialFalse;
-			comp.initial = false;
-		}
-
-		comp.result = (comp.module < minModule && !forceMerge) ? "" : mergePair(StringPair(first, second),comp.module,comp.initial);
-
-
-		result = comp;
-	}
-
-	void calcResult(bool force = false){
-			if(!compared){
-					calcularCompareResult(force);
-					compared = true;
-			}
-	}
+	void calcResult(bool force);
 };
 
 inline bool operator==(const StringPair& first, const StringPair& second){
@@ -162,7 +56,5 @@ inline bool operator==(const StringPair& first, const StringPair& second){
 inline bool operator!=(const StringPair& first, const StringPair& second){
 	return (!(first == second));
 }
-
-
 
 #endif

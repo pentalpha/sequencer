@@ -1,1 +1,1 @@
-time ./main-normal < problema-hackaton/A.input > outputs/A_normal.output
+time ./main-normal < inputs/A.input > outputs/A_normal.output
