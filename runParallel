@@ -1,1 +1,1 @@
-time ./main-parallel < inputs/A.input > outputs/A_parallel.output
+time ./bin/main-parallel < inputs/A.input > outputs/A_parallel.output

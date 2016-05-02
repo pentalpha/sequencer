@@ -2,23 +2,12 @@
 #define _STRING_PAIR_
 #include <string>
 #include <omp.h>
+#include "CompareResult.h"
 
 #define FIRST 0
 #define LAST  size()-1
 
 using namespace std;
-
-struct CompareResult{
-	CompareResult();
-
-	CompareResult(int m, bool i, string a);
-
-	int module;
-	bool initial;
-	string result;
-
-	bool haveResult();
-};
 
 class StringPair{
 public:

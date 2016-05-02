@@ -1,1 +1,1 @@
-time ./main-normal < inputs/A.input > outputs/A_normal.output
+time ./bin/main-normal < inputs/A.input > outputs/A_normal.output

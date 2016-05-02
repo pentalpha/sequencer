@@ -1,1 +1,0 @@
-./main-parallel < problema-hackaton/A.input > outputs/A_parallel.output
