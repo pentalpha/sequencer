@@ -9,16 +9,24 @@
 #include "StringOperations.h"
 #include "Bucket.h"
 
+Bucket operator+(const Bucket &bucket, const Bucket &otherBucket)
+{
+	Bucket sum = bucket;
+	sum.segments.insert(sum.segments.begin(),
+						otherBucket.segments.begin(), otherBucket.segments.end());
+	return sum;
+}
+
 using namespace std;
 
 int main(int argc, char **argv){
-
 	int segmentsPerBucket = 9;
-	int totalSegments = 0;
-	string line;
+	
 	vector<string> tempSegments;
-	vector<vector<string> > tempBuckets;
-	cout << "vars created\n";
+	vector<Bucket> buckets;
+
+	string line;
+	int totalSegments = 0;
 	while(getline(cin, line)){
 		//Caso o texto use quebras de linha do tipo "\n\r", retira as \r"
 		if(line[line.size()-1] == '\r'){
@@ -26,63 +34,64 @@ int main(int argc, char **argv){
 			
 			//cout << "quebra de linha barra r retirada  \n";
 		}
+
 		tempSegments.push_back(line);
 		totalSegments++;
 		if(tempSegments.size() == segmentsPerBucket){
-			tempBuckets.push_back(tempSegments);
+			buckets.push_back(Bucket(tempSegments));
 			tempSegments.clear();
 		}
 	}
 	if(!tempSegments.empty()){
-		tempBuckets.push_back(tempSegments);
+		buckets.push_back(Bucket(tempSegments));
 		tempSegments.clear();
 	}
 	cout << "temp buckets instantiated\n";
-	int nBuckets = tempBuckets.size();
-	Bucket* buckets = new Bucket[nBuckets];
 	
-	for(int i = 0; i < nBuckets; i++){
+	/*for(int i = 0; i < nBuckets; i++){
 		buckets[i].nSegments = tempBuckets[i].size();
 		buckets[i].segments = new string[buckets[i].nSegments];
 		for(int j = 0; j < buckets[i].nSegments; j++){
 			buckets[i].segments[j] = tempBuckets[i][j];
 		}
 		tempBuckets[i].clear();
-	}
-	tempBuckets.clear();
+	}*/
+	//tempBuckets.clear();
 	cout << "buckets instantiated\n";
 
-	for(int actualBucket = 0; actualBucket < nBuckets; actualBucket++){
-		 cout << "Bucket " << actualBucket <<":\n";
-		 cout << "the bucket " << actualBucket << " have " << buckets[actualBucket].nSegments << "." << endl;
-		buckets[actualBucket].process(false);
+	for(Bucket bucket : buckets){
+		//cout << "Bucket " << actualBucket <<":\n";
+		//cout << "the bucket " << actualBucket << " have " << buckets[actualBucket].nSegments << "." << endl;
+		bucket.process(false);
 		//nSegmentsInBucket[actualBucket] = nSegments;
-		cout << "Final processing of the bucket[outside]\n";
-		for (int i = 0; i < buckets[actualBucket].nSegments; i++){
-		 	cout << "segments[" << i << "] = \"" << buckets[actualBucket].segments[i] << "\"\n";
-		}
-		cout << "the bucket " << actualBucket << " now have " << buckets[actualBucket].nSegments << "." << endl;
+		//cout << "Final processing of the bucket[outside]\n";
+		//for (int i = 0; i < buckets[actualBucket].nSegments; i++){
+		// 	cout << "segments[" << i << "] = \"" << buckets[actualBucket].segments[i] << "\"\n";
+		//}
+		//cout << "the bucket " << actualBucket << " now have " << buckets[actualBucket].nSegments << "." << endl;
 	}
 	
 	int segmentsLeft = 0;
-	for(int i = 0; i < nBuckets; i++){
-		segmentsLeft += buckets[i].nSegments;
+	for(Bucket bucket : buckets){
+		segmentsLeft += bucket.nSegments();
 	}
 	cout << segmentsLeft << " segments left in total." << endl;
 	Bucket finalBucket;
-	finalBucket.segments = new string[segmentsLeft];
-	finalBucket.nSegments = segmentsLeft;
+	//finalBucket.segments = new string[segmentsLeft];
+	//finalBucket.nSegments = segmentsLeft;
 	int index = 0;
 	
-	for(int i = 0; i < nBuckets; i++){
-		for(int j = 0; j < buckets[i].nSegments; j++){
-			finalBucket.segments[index] = buckets[i].segments[j];
-			index++;
-		}
+	for(Bucket bucket : buckets){
+		finalBucket = finalBucket + bucket;
 	}
+
 	cout << "Bucket final:\n";
 	finalBucket.process(true);
-	string textoSaida = finalBucket.segments[0];
+	string textoSaida = "";
+	//for (int i = 0; i < finalBucket.segments.size(); i++){
+	//	textoSaida += "[] - " + finalBucket.segments[i] + "\n";
+	//}
+	textoSaida = finalBucket.segments[0];
 	//replace(textoSaida.begin(),textoSaida.end(),"%%","\n");
 	
 	
