@@ -87,16 +87,8 @@ void StringPair::calcularCompareResult(bool forceMerge){
 	int initialTrue;
 	int initialFalse;
 
-	#pragma omp parallel
-	{
-		#pragma omp sections
-		{
-			#pragma omp section
-			{initialTrue = calcularInitialTrue(first,second);}
-			#pragma omp section
-			{initialFalse = calcularInitialFalse(first,second);}
-		}
-	}
+	initialTrue = calcularInitialTrue(first,second);
+	initialFalse = calcularInitialFalse(first,second);
 
 	if(initialTrue >= initialFalse){
 		comp.module  = initialTrue;

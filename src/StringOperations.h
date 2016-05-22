@@ -22,12 +22,8 @@ public:
 	}
 
 	static inline void copyStringVector(string* v1, string* v2, int size){
-		#pragma omp parallel
-		{
-			#pragma omp for
-			for(int i = 0; i < size; i++){
-				v2[i] = v1[i];
-			}
+		for(int i = 0; i < size; i++){
+			v2[i] = v1[i];
 		}
 	}
 };

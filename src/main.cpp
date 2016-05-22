@@ -1,3 +1,4 @@
+//#define NDEBUG
 #include <algorithm>
 #include <iostream>
 #include <cstdio>
@@ -19,7 +20,7 @@ int main(int argc, char **argv){
 	vector<vector<string> > tempBuckets;
 	cout << "vars created\n";
 	while(getline(cin, line)){
-		//Caso o texto use quebras de linha do tipo "\n\r", retire as \r"
+		//Caso o texto use quebras de linha do tipo "\n\r", retira as \r"
 		if(line[line.size()-1] == '\r'){
 			line = line.substr(0, line.size()-1);
 			
@@ -50,10 +51,8 @@ int main(int argc, char **argv){
 	}
 	tempBuckets.clear();
 	cout << "buckets instantiated\n";
-	#pragma omp parallel
-	{
-		#pragma omp for
-		for(int actualBucket = 0; actualBucket < nBuckets; actualBucket++){
+
+	for(int actualBucket = 0; actualBucket < nBuckets; actualBucket++){
 		 cout << "Bucket " << actualBucket <<":\n";
 		 cout << "the bucket " << actualBucket << " have " << buckets[actualBucket].nSegments << "." << endl;
 		buckets[actualBucket].process(false);
@@ -63,8 +62,6 @@ int main(int argc, char **argv){
 		 	cout << "segments[" << i << "] = \"" << buckets[actualBucket].segments[i] << "\"\n";
 		}
 		cout << "the bucket " << actualBucket << " now have " << buckets[actualBucket].nSegments << "." << endl;
-		}
-		
 	}
 	
 	int segmentsLeft = 0;
