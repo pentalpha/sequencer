@@ -10,6 +10,8 @@
 
 using namespace std;
 
+
+
 void Bucket::process(bool forceMerge){
 	int oldNSegments;
 

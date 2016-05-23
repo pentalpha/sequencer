@@ -16,7 +16,7 @@ public:
     }
 
     Bucket(){
-    	
+
     }
 
     inline int nSegments(){
@@ -24,6 +24,10 @@ public:
     }
     
     void process(bool forceMerge);
+    
+    
 };
+
+
 
 #endif
