@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <istream>
+#include <map>
 
 #include "StringPair.h"
 #include "StringOperations.h"
@@ -56,12 +57,12 @@ int main(int argCount, char* argVector[]){
 		}
 
 		bucket.process(false);
-		cout << "Bucket final:\n";
+		//cout << "Bucket final:\n";
 		bucket.process(true);
-		string textoSaida = "";
-		for (string segment : bucket.segments){
-			textoSaida += "[] - " + segment + "\n";
-		}
+		string textoSaida = bucket.segments[0];
+		//for (string segment : bucket.segments){
+		//	textoSaida += "[] - " + segment + "\n";
+		//}
 		
 		//substituir os %% por \n
 		for(int i = 0; i < textoSaida.size()-1; i++){

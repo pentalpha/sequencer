@@ -24,9 +24,9 @@ public:
 		options->processCommandArgs(argCount, argVector);
 	
 		inputFileDefined = (options->getValue("input") != NULL);
-		if(inputFileDefined){
-			cout << "input file defined" << endl;
-		}
+		//if(inputFileDefined){
+		//	cout << "input file defined" << endl;
+		//}
 		outputFileDefined = (options->getValue("output") != NULL);
 		helpFlag = (options->getFlag("help") || options->getFlag('h'));
 		if(inputFileDefined){

@@ -1,1 +1,1 @@
-time ./bin/main-normal < inputs/A.input > outputs/A_normal.output
+time ./sequencer --input inputs/A.input --output outputs/A_normal.output

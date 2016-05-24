@@ -13,24 +13,14 @@ class StringPair{
 public:
 	string x;
 	string y;
-	bool compared;
-	CompareResult result;
 
 	StringPair();
 
 	StringPair(string a, string b);
 
-	string mergePair(StringPair a, int module, bool initial);
+	static string mergePair(StringPair a, int module, bool initial);
 
 	string printPair();
-
-	int calcularInitialTrue(string s, string t);
-
-	int calcularInitialFalse(string s, string t);
-
-	void calcularCompareResult(bool forceMerge = false);
-
-	void calcResult(bool force);
 };
 
 inline bool operator==(const StringPair& first, const StringPair& second){
@@ -44,6 +34,22 @@ inline bool operator==(const StringPair& first, const StringPair& second){
 
 inline bool operator!=(const StringPair& first, const StringPair& second){
 	return (!(first == second));
+}
+
+inline bool operator<(const StringPair& first, const StringPair& second){
+	return ((first.x.length() + first.y.length()) < (second.x.length() + second.y.length()));
+}
+
+inline bool operator>(const StringPair& first, const StringPair& second){
+	return ((first.x.length() + first.y.length()) > (second.x.length() + second.y.length()));
+}
+
+inline bool operator>=(const StringPair& first, const StringPair& second){
+	return (first > second || first == second);
+}
+
+inline bool operator<=(const StringPair& first, const StringPair& second){
+	return (first < second || first == second);
 }
 
 #endif
