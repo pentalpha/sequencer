@@ -9,68 +9,17 @@
 
 #include "StringPair.h"
 #include "StringOperations.h"
-#include "Bucket.h"
+#include "SegmentSet.h"
 #include "Arguments.h"
 
 using namespace std;
 
-Bucket operator+(const Bucket &bucket, const Bucket &otherBucket)
-{
-        Bucket sum = bucket;
-        sum.segments.insert(sum.segments.begin(),
-                            otherBucket.segments.begin(), otherBucket.segments.end());
-        return sum;
-}
+void sequencer(Arguments arguments);
 
 int main(int argCount, char* argVector[]){
 	Arguments arguments(argCount, argVector);
 	if(!arguments.helpFlag){
-		istream* inputStream;
-		ostream* outputStream;
-		
-		//seleciona a entrada de dados
-		if(arguments.inputFileDefined){
-			ifstream *inputFileStream = new ifstream;
-			inputFileStream->open(arguments.inputFile.c_str());
-			inputStream = inputFileStream;
-		}else{
-			inputStream = &cin;
-		}
-		//seleciona a saida de dados
-		if(arguments.outputFileDefined){
-			ofstream* outputFileStream = new ofstream;
-			outputFileStream->open(arguments.outputFile.c_str(), ios::trunc);
-			outputStream = outputFileStream;
-		}else{
-			outputStream = &cout;
-		}
-		//loop de leitura
-		Bucket bucket;
-		string line;
-		while(getline(*inputStream, line)){
-			//Caso o texto use quebras de linha do tipo "\n\r", retira as \r"
-			if(line[line.size()-1] == '\r'){
-				line = line.substr(0, line.size()-1);
-				//cout << "quebra de linha barra r retirada  \n";
-			}
-			bucket.segments.push_back(line);
-		}
-
-		bucket.process(false);
-		//cout << "Bucket final:\n";
-		bucket.process(true);
-		string textoSaida = bucket.segments[0];
-		//for (string segment : bucket.segments){
-		//	textoSaida += "[] - " + segment + "\n";
-		//}
-		
-		//substituir os %% por \n
-		for(int i = 0; i < textoSaida.size()-1; i++){
-			if((textoSaida[i] == '%') && (textoSaida[i+1] == '%')){
-				textoSaida.replace(i,2,"\n");
-			}
-		}
-		*outputStream << textoSaida;
+		sequencer(arguments);
 	}
 	else
 	{
@@ -78,4 +27,39 @@ int main(int argCount, char* argVector[]){
 	}
 	
 	return 0;
+}
+
+void sequencer(Arguments arguments){
+		istream* inputStream;
+		ostream* outputStream;
+		//seleciona a entrada de dados
+		ifstream *inputFileStream;
+		if(arguments.inputFileDefined){
+			inputFileStream = new ifstream;
+			inputFileStream->open(arguments.inputFile.c_str());
+			inputStream = inputFileStream;
+		}else{
+			inputStream = &cin;
+		}
+		
+		//seleciona a saida de dados
+		ofstream* outputFileStream;
+		if(arguments.outputFileDefined){
+			outputFileStream = new ofstream;
+			outputFileStream->open(arguments.outputFile.c_str(), ios::trunc);
+			outputStream = outputFileStream;
+		}else{
+			outputStream = &cout;
+		}
+		
+		SegmentSet segmentSet(inputStream);
+		bool successful = segmentSet.process();
+		
+		if(!successful){
+			*outputStream << "[MULTIPLOS SEGMENTOS RESTANTES, ALGORITMO MAL SUCEDIDO]";
+		}
+		*outputStream << segmentSet.getResults();
+		
+		if(arguments.inputFileDefined) inputFileStream->close();
+		if(arguments.outputFileDefined) outputFileStream->close();
 }

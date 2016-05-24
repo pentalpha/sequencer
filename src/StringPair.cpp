@@ -15,8 +15,6 @@ StringPair::StringPair(string a, string b){
 }
 
 string StringPair::mergePair(StringPair a, int module, bool initial){
-	// cout << module << " " << initial << "\n";
-
 	string result;
 	string cuttedY;
 	if(initial){

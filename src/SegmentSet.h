@@ -7,15 +7,17 @@
 
 using namespace std;
 
-class Bucket{
+class SegmentSet{
 public:
     vector<string> segments;
 
-    Bucket(vector<string> newSegments){
+    SegmentSet(vector<string> newSegments){
     	segments = newSegments;
     }
+    
+    SegmentSet(istream* inputStream);
 
-    Bucket(){
+    SegmentSet(){
 
     }
 
@@ -23,9 +25,9 @@ public:
     	return segments.size();
     }
     
-    void process(bool forceMerge);
+    bool process();
     
-    
+    string getResults();
 };
 
 
