@@ -9,6 +9,11 @@
 
 using namespace std;
 
+/**
+	@brief	Pair of strings, the order of the strings does not matter.
+	@author Pitágoras Alves
+	@date	May 2016
+*/
 class StringPair{
 public:
 	string x;
@@ -17,7 +22,14 @@ public:
 	StringPair();
 
 	StringPair(string a, string b);
-
+	/**
+		Merge two strings according to a certain magnitude and a direction.
+		@param	a	Pair of strings to merge.
+		@param	module	Module of the merge, lenght of characters equals in both strings.
+		@param	initial	If the first string will be merged in the beggining of the second, false if the contrary.
+		
+		@return The merged string
+	*/
 	static string mergePair(StringPair a, int module, bool initial);
 
 	string printPair();

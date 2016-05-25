@@ -6,7 +6,10 @@
 using namespace std;
 
 /**
-	@brief	
+	@brief	Handles the combination of a pair of strings
+	
+	@author Pitágoras Alves
+	@date	May 2016
 */
 class StringMerge{
 public:
@@ -18,11 +21,11 @@ public:
 	StringMerge(string a, string b, bool forceMerge);
 	StringMerge(int m, bool i, string a);
 	StringMerge();
-
 	bool haveResult();
-	void compare(string x, string y, bool forceMerge);
 
 protected:
+	
+	void compare(string x, string y, bool forceMerge);
 	static int calcularInitialTrue(string s, string t);
 	static int calcularInitialFalse(string s, string t);
 	void calcModule(string first, string second);

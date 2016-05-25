@@ -112,6 +112,9 @@ $(document).ready(function(){initNavTree('class_segment_set.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Conjunto de seguimentos de texto.  
+ <a href="class_segment_set.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_segment_set_8h_source.html">SegmentSet.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -134,7 +137,11 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:acf2bb2827057318d47f68257e159dc47"><td class="memItemLeft" align="right" valign="top">vector&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_segment_set.html#acf2bb2827057318d47f68257e159dc47">segments</a></td></tr>
 <tr class="separator:acf2bb2827057318d47f68257e159dc47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Conjunto de seguimentos de texto. </p>
+<dl class="section author"><dt>Author</dt><dd>Pitágoras Alves </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>May 2016 </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a00efd19ce62bba238c0820947b1a5e6d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -156,6 +163,13 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Builds the class based in sequence of segments</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newSegments</td><td>segments of text to be copied </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -172,6 +186,13 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Builds the class using a stream to request textual input.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inputStream</td><td>A valid istream pointer. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -249,6 +270,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Trys to merge all the segments of text into only one.</p>
+<dl class="section return"><dt>Returns</dt><dd>If the algorithm resulted in only one final text </dd></dl>
 
 </div>
 </div>
@@ -275,7 +298,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_segment_set.html">SegmentSet</a></li>
-    <li class="footer">Generated on Wed May 25 2016 09:48:53 for Sequencer by
+    <li class="footer">Generated on Wed May 25 2016 11:40:53 for Sequencer by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

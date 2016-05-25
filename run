@@ -1,1 +1,1 @@
-time ./sequencer --input inputs/A.input --output outputs/A_normal.output
+time ./sequencer --input inputs/CUSTOM.input --output outputs/CUSTOM_normal.output
