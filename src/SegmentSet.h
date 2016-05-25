@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <assert.h>
 #include "StringPair.h"
 
 using namespace std;
@@ -12,6 +13,8 @@ public:
     vector<string> segments;
 
     SegmentSet(vector<string> newSegments){
+        assert(!newSegments.empty());
+        
     	segments = newSegments;
     }
     

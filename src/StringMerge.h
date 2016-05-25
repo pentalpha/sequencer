@@ -5,27 +5,23 @@
 
 using namespace std;
 
-class CompareResult{
+class StringMerge{
 public:
-	CompareResult(string a, string b, bool forceMerge);
-
-	CompareResult(int m, bool i, string a);
-	
-	CompareResult();
-
 	int module;
 	bool initial;
 	string result;
 
+	StringMerge(string a, string b, bool forceMerge);
+	StringMerge(int m, bool i, string a);
+	StringMerge();
+
 	bool haveResult();
+	void compare(string x, string y, bool forceMerge);
 
+protected:
 	static int calcularInitialTrue(string s, string t);
-
 	static int calcularInitialFalse(string s, string t);
-
-	void calcularCompareResult(string x, string y, bool forceMerge);
-
-	void calcResult(bool force);
+	void calcModule(string first, string second);
 };
 
 #endif

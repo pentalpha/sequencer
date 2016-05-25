@@ -2,6 +2,7 @@
 #define _ARGUMENTS_
 
 #include <string>
+#include <assert.h>
 #include "anyoption.h"
 
 using namespace std;
@@ -14,6 +15,9 @@ public:
 	bool helpFlag;
 	
 	Arguments(int argCount, char* argVector[]){
+		assert(argCount >= 0);
+		assert(argVector != NULL);
+		
 		options = new AnyOption();
 		options->addUsage("-h, --help\t\tPrints this help");
 		options->addUsage("--input\t<file_name>\tSet the input file with the segments");
@@ -24,9 +28,6 @@ public:
 		options->processCommandArgs(argCount, argVector);
 	
 		inputFileDefined = (options->getValue("input") != NULL);
-		//if(inputFileDefined){
-		//	cout << "input file defined" << endl;
-		//}
 		outputFileDefined = (options->getValue("output") != NULL);
 		helpFlag = (options->getFlag("help") || options->getFlag('h'));
 		if(inputFileDefined){

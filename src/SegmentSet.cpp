@@ -5,26 +5,36 @@
 #include <string>
 #include <map>
 #include <istream>
+#include <assert.h>
 
 #include "StringPair.h"
-#include "StringOperations.h"
 #include "SegmentSet.h"
 
 using namespace std;
 
 SegmentSet::SegmentSet(istream* inputStream){
+	assert(inputStream != NULL);
+	
 	string line;
-	while(getline(*inputStream, line)){
-		//Caso o texto use quebras de linha do tipo "\n\r", retira as \r"
-		if(line[line.size()-1] == '\r'){
-			line = line.substr(0, line.size()-1);
-			//cout << "quebra de linha barra r retirada  \n";
+	bool endOfFile = false;
+	do{
+		try{
+			getline(*inputStream, line);
+			//Caso o texto use quebras de linha do tipo "\n\r", retira as \r"
+			if(line[line.size()-1] == '\r'){
+				line = line.substr(0, line.size()-1);
+				//cout << "quebra de linha barra r retirada  \n";
+			}
+			segments.push_back(line);
+		}catch(...){
+			endOfFile = true;
 		}
-		segments.push_back(line);
-	}
+	}while(!endOfFile);
 }
 
 string SegmentSet::getResults(){
+	assert(segments.size() >= 1);
+	
 	string results = "";
 	if(segments.size() == 1){
 		results = segments[0];
@@ -44,7 +54,9 @@ string SegmentSet::getResults(){
 }
 
 bool SegmentSet::process(){
-	map<StringPair, CompareResult> affinity;
+	assert(segments.size() >= 1);
+	
+	map<StringPair, StringMerge> affinity;
 	bool merged = false;
 	do{
 		StringPair* keyMax = NULL;
@@ -57,7 +69,7 @@ bool SegmentSet::process(){
 				StringPair key = StringPair(segments[i], segments[j]);
 				//se a o par de strings ainda não foi comparado, comparar e armazenar
 				if(affinity.find(key) == affinity.end()){
-					affinity[key] = CompareResult(segments[i], segments[j], true);
+					affinity[key] = StringMerge(segments[i], segments[j], true);
 				}
 				//verificar se um maximo local foi encontrado
 				if(affinity[key].haveResult()){
