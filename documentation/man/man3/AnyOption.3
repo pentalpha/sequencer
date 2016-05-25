@@ -1,0 +1,267 @@
+.TH "AnyOption" 3 "Wed May 25 2016" "Version 2.0" "Sequencer" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+AnyOption \- 
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <anyoption\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBAnyOption\fP ()"
+.br
+.ti -1c
+.RI "\fBAnyOption\fP (int maxoptions)"
+.br
+.ti -1c
+.RI "\fBAnyOption\fP (int maxoptions, int maxcharoptions)"
+.br
+.ti -1c
+.RI "\fB~AnyOption\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetCommandPrefixChar\fP (char _prefix)"
+.br
+.ti -1c
+.RI "void \fBsetCommandLongPrefix\fP (char *_prefix)"
+.br
+.ti -1c
+.RI "void \fBsetFileCommentChar\fP (char _comment)"
+.br
+.ti -1c
+.RI "void \fBsetFileDelimiterChar\fP (char _delimiter)"
+.br
+.ti -1c
+.RI "void \fBuseCommandArgs\fP (int _argc, char **_argv)"
+.br
+.ti -1c
+.RI "void \fBuseFiileName\fP (const char *_filename)"
+.br
+.ti -1c
+.RI "void \fBnoPOSIX\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetVerbose\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetOption\fP (const char *opt_string)"
+.br
+.ti -1c
+.RI "void \fBsetOption\fP (char opt_char)"
+.br
+.ti -1c
+.RI "void \fBsetOption\fP (const char *opt_string, char opt_char)"
+.br
+.ti -1c
+.RI "void \fBsetFlag\fP (const char *opt_string)"
+.br
+.ti -1c
+.RI "void \fBsetFlag\fP (char opt_char)"
+.br
+.ti -1c
+.RI "void \fBsetFlag\fP (const char *opt_string, char opt_char)"
+.br
+.ti -1c
+.RI "void \fBsetCommandOption\fP (const char *opt_string)"
+.br
+.ti -1c
+.RI "void \fBsetCommandOption\fP (char opt_char)"
+.br
+.ti -1c
+.RI "void \fBsetCommandOption\fP (const char *opt_string, char opt_char)"
+.br
+.ti -1c
+.RI "void \fBsetCommandFlag\fP (const char *opt_string)"
+.br
+.ti -1c
+.RI "void \fBsetCommandFlag\fP (char opt_char)"
+.br
+.ti -1c
+.RI "void \fBsetCommandFlag\fP (const char *opt_string, char opt_char)"
+.br
+.ti -1c
+.RI "void \fBsetFileOption\fP (const char *opt_string)"
+.br
+.ti -1c
+.RI "void \fBsetFileOption\fP (char opt_char)"
+.br
+.ti -1c
+.RI "void \fBsetFileOption\fP (const char *opt_string, char opt_char)"
+.br
+.ti -1c
+.RI "void \fBsetFileFlag\fP (const char *opt_string)"
+.br
+.ti -1c
+.RI "void \fBsetFileFlag\fP (char opt_char)"
+.br
+.ti -1c
+.RI "void \fBsetFileFlag\fP (const char *opt_string, char opt_char)"
+.br
+.ti -1c
+.RI "void \fBprocessOptions\fP ()"
+.br
+.ti -1c
+.RI "void \fBprocessCommandArgs\fP ()"
+.br
+.ti -1c
+.RI "void \fBprocessCommandArgs\fP (int max_args)"
+.br
+.ti -1c
+.RI "bool \fBprocessFile\fP ()"
+.br
+.ti -1c
+.RI "void \fBprocessCommandArgs\fP (int _argc, char **_argv)"
+.br
+.ti -1c
+.RI "void \fBprocessCommandArgs\fP (int _argc, char **_argv, int max_args)"
+.br
+.ti -1c
+.RI "bool \fBprocessFile\fP (const char *_filename)"
+.br
+.ti -1c
+.RI "char * \fBgetValue\fP (const char *_option)"
+.br
+.ti -1c
+.RI "bool \fBgetFlag\fP (const char *_option)"
+.br
+.ti -1c
+.RI "char * \fBgetValue\fP (char _optchar)"
+.br
+.ti -1c
+.RI "bool \fBgetFlag\fP (char _optchar)"
+.br
+.ti -1c
+.RI "void \fBprintUsage\fP ()"
+.br
+.ti -1c
+.RI "void \fBprintAutoUsage\fP ()"
+.br
+.ti -1c
+.RI "void \fBaddUsage\fP (const char *line)"
+.br
+.ti -1c
+.RI "void \fBprintHelp\fP ()"
+.br
+.ti -1c
+.RI "void \fBautoUsagePrint\fP (bool flag)"
+.br
+.ti -1c
+.RI "int \fBgetArgc\fP ()"
+.br
+.ti -1c
+.RI "char * \fBgetArgv\fP (int index)"
+.br
+.ti -1c
+.RI "bool \fBhasOptions\fP ()"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "AnyOption::AnyOption ()"
+
+.SS "AnyOption::AnyOption (intmaxoptions)"
+
+.SS "AnyOption::AnyOption (intmaxoptions, intmaxcharoptions)"
+
+.SS "AnyOption::~AnyOption ()"
+
+.SH "Member Function Documentation"
+.PP 
+.SS "void AnyOption::addUsage (const char *line)"
+
+.SS "void AnyOption::autoUsagePrint (boolflag)"
+
+.SS "int AnyOption::getArgc ()"
+
+.SS "char * AnyOption::getArgv (intindex)"
+
+.SS "bool AnyOption::getFlag (const char *_option)"
+
+.SS "bool AnyOption::getFlag (char_optchar)"
+
+.SS "char * AnyOption::getValue (const char *_option)"
+
+.SS "char * AnyOption::getValue (char_optchar)"
+
+.SS "bool AnyOption::hasOptions ()"
+
+.SS "void AnyOption::noPOSIX ()"
+
+.SS "void AnyOption::printAutoUsage ()"
+
+.SS "void AnyOption::printHelp ()"
+
+.SS "void AnyOption::printUsage ()"
+
+.SS "void AnyOption::processCommandArgs ()"
+
+.SS "void AnyOption::processCommandArgs (intmax_args)"
+
+.SS "void AnyOption::processCommandArgs (int_argc, char **_argv)"
+
+.SS "void AnyOption::processCommandArgs (int_argc, char **_argv, intmax_args)"
+
+.SS "bool AnyOption::processFile ()"
+
+.SS "bool AnyOption::processFile (const char *_filename)"
+
+.SS "void AnyOption::processOptions ()"
+
+.SS "void AnyOption::setCommandFlag (const char *opt_string)"
+
+.SS "void AnyOption::setCommandFlag (charopt_char)"
+
+.SS "void AnyOption::setCommandFlag (const char *opt_string, charopt_char)"
+
+.SS "void AnyOption::setCommandLongPrefix (char *_prefix)"
+
+.SS "void AnyOption::setCommandOption (const char *opt_string)"
+
+.SS "void AnyOption::setCommandOption (charopt_char)"
+
+.SS "void AnyOption::setCommandOption (const char *opt_string, charopt_char)"
+
+.SS "void AnyOption::setCommandPrefixChar (char_prefix)"
+
+.SS "void AnyOption::setFileCommentChar (char_comment)"
+
+.SS "void AnyOption::setFileDelimiterChar (char_delimiter)"
+
+.SS "void AnyOption::setFileFlag (const char *opt_string)"
+
+.SS "void AnyOption::setFileFlag (charopt_char)"
+
+.SS "void AnyOption::setFileFlag (const char *opt_string, charopt_char)"
+
+.SS "void AnyOption::setFileOption (const char *opt_string)"
+
+.SS "void AnyOption::setFileOption (charopt_char)"
+
+.SS "void AnyOption::setFileOption (const char *opt_string, charopt_char)"
+
+.SS "void AnyOption::setFlag (const char *opt_string)"
+
+.SS "void AnyOption::setFlag (charopt_char)"
+
+.SS "void AnyOption::setFlag (const char *opt_string, charopt_char)"
+
+.SS "void AnyOption::setOption (const char *opt_string)"
+
+.SS "void AnyOption::setOption (charopt_char)"
+
+.SS "void AnyOption::setOption (const char *opt_string, charopt_char)"
+
+.SS "void AnyOption::setVerbose ()"
+
+.SS "void AnyOption::useCommandArgs (int_argc, char **_argv)"
+
+.SS "void AnyOption::useFiileName (const char *_filename)"
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Sequencer from the source code\&.

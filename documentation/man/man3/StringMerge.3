@@ -1,0 +1,91 @@
+.TH "StringMerge" 3 "Wed May 25 2016" "Version 2.0" "Sequencer" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+StringMerge \- 
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <StringMerge\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBStringMerge\fP (string a, string b, bool forceMerge)"
+.br
+.ti -1c
+.RI "\fBStringMerge\fP (int m, bool i, string a)"
+.br
+.ti -1c
+.RI "\fBStringMerge\fP ()"
+.br
+.ti -1c
+.RI "bool \fBhaveResult\fP ()"
+.br
+.ti -1c
+.RI "void \fBcompare\fP (string x, string y, bool forceMerge)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "int \fBmodule\fP"
+.br
+.ti -1c
+.RI "bool \fBinitial\fP"
+.br
+.ti -1c
+.RI "string \fBresult\fP"
+.br
+.in -1c
+.SS "Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBcalcModule\fP (string first, string second)"
+.br
+.in -1c
+.SS "Static Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static int \fBcalcularInitialTrue\fP (string s, string t)"
+.br
+.ti -1c
+.RI "static int \fBcalcularInitialFalse\fP (string s, string t)"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "StringMerge::StringMerge (stringa, stringb, boolforceMerge)"
+
+.SS "StringMerge::StringMerge (intm, booli, stringa)"
+
+.SS "StringMerge::StringMerge ()"
+
+.SH "Member Function Documentation"
+.PP 
+.SS "void StringMerge::calcModule (stringfirst, stringsecond)\fC [protected]\fP"
+
+.SS "static int StringMerge::calcularInitialFalse (strings, stringt)\fC [static]\fP, \fC [protected]\fP"
+
+.SS "int StringMerge::calcularInitialTrue (strings, stringt)\fC [static]\fP, \fC [protected]\fP"
+
+.SS "void StringMerge::compare (stringx, stringy, boolforceMerge)"
+
+.SS "bool StringMerge::haveResult ()"
+
+.SH "Member Data Documentation"
+.PP 
+.SS "bool StringMerge::initial"
+
+.SS "int StringMerge::module"
+
+.SS "string StringMerge::result"
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Sequencer from the source code\&.

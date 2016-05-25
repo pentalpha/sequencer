@@ -6,7 +6,11 @@
 #include "anyoption.h"
 
 using namespace std;
-
+/**
+	@brief Parses command line arguments to be used as simple bools and strings
+	@author Pitágoras Alves
+	@date May 2016
+*/
 class Arguments{
 public:
 	AnyOption* options;
@@ -14,6 +18,11 @@ public:
 	bool inputFileDefined, outputFileDefined;
 	bool helpFlag;
 	
+	/**
+		Constructor for the class Arguments
+		@param	argCount	Number of arguments
+		@param	argVector	Array with the arguments in c strings
+	*/
 	Arguments(int argCount, char* argVector[]){
 		assert(argCount >= 0);
 		assert(argVector != NULL);

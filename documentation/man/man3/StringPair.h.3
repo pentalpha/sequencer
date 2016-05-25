@@ -1,0 +1,77 @@
+.TH "src/StringPair.h" 3 "Wed May 25 2016" "Version 2.0" "Sequencer" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/StringPair.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <string>\fP
+.br
+\fC#include <omp\&.h>\fP
+.br
+\fC#include 'StringMerge\&.h'\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBStringPair\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBFIRST\fP   0"
+.br
+.ti -1c
+.RI "#define \fBLAST\fP   size()-1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBStringPair\fP &first, const \fBStringPair\fP &second)"
+.br
+.ti -1c
+.RI "bool \fBoperator!=\fP (const \fBStringPair\fP &first, const \fBStringPair\fP &second)"
+.br
+.ti -1c
+.RI "bool \fBoperator<\fP (const \fBStringPair\fP &first, const \fBStringPair\fP &second)"
+.br
+.ti -1c
+.RI "bool \fBoperator>\fP (const \fBStringPair\fP &first, const \fBStringPair\fP &second)"
+.br
+.ti -1c
+.RI "bool \fBoperator>=\fP (const \fBStringPair\fP &first, const \fBStringPair\fP &second)"
+.br
+.ti -1c
+.RI "bool \fBoperator<=\fP (const \fBStringPair\fP &first, const \fBStringPair\fP &second)"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define FIRST   0"
+
+.SS "#define LAST   size()-1"
+
+.SH "Function Documentation"
+.PP 
+.SS "bool operator!= (const \fBStringPair\fP &first, const \fBStringPair\fP &second)\fC [inline]\fP"
+
+.SS "bool operator< (const \fBStringPair\fP &first, const \fBStringPair\fP &second)\fC [inline]\fP"
+
+.SS "bool operator<= (const \fBStringPair\fP &first, const \fBStringPair\fP &second)\fC [inline]\fP"
+
+.SS "bool operator== (const \fBStringPair\fP &first, const \fBStringPair\fP &second)\fC [inline]\fP"
+
+.SS "bool operator> (const \fBStringPair\fP &first, const \fBStringPair\fP &second)\fC [inline]\fP"
+
+.SS "bool operator>= (const \fBStringPair\fP &first, const \fBStringPair\fP &second)\fC [inline]\fP"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Sequencer from the source code\&.

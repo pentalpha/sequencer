@@ -14,6 +14,11 @@
 
 using namespace std;
 
+/**
+	Reads the segments, process them and outputs the final text
+
+	@param	arguments	command line options to be used
+*/
 void sequencer(Arguments* arguments);
 
 int main(int argCount, char* argVector[]){

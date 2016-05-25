@@ -5,12 +5,16 @@
 
 using namespace std;
 
+/**
+	@brief	
+*/
 class StringMerge{
 public:
 	int module;
 	bool initial;
 	string result;
-
+	
+	
 	StringMerge(string a, string b, bool forceMerge);
 	StringMerge(int m, bool i, string a);
 	StringMerge();
