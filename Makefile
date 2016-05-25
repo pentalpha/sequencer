@@ -3,3 +3,4 @@ normal:
 
 tests:
 	g++ --std=c++11 src/SegmentSetTests.cpp src/SegmentSet.cpp src/StringMerge.cpp src/StringPair.cpp src/anyoption.cpp -o testSegmentSet -O3
+	g++ --std=c++11 src/StringMergeTests.cpp src/SegmentSet.cpp src/StringMerge.cpp src/StringPair.cpp src/anyoption.cpp -o testStringMerge -O3

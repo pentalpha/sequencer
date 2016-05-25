@@ -19,3 +19,19 @@ Algorithm made for the Bioinformatics Hackathon (http://bioinformatica.imd.ufrn.
 ----------------------------------------
 
 Tarefa para o Hackaton 2016 (Seminario Bioinformatica)
+
+----------------------------------------
+
+How to build and run:
+
+Building the app: $ make all
+
+The executable will be "sequencer"
+
+For help about the command line arguments: $ ./sequencer --help
+
+Building the tests: $ make testes
+
+The tests are "testSegmentSet" and "testStringMerge"
+
+If the executables dont have execution rights: $ chmod 755 <file_name>
